@@ -4,7 +4,6 @@ Terms of Reference (ToR) for the Project "Platform for Publication of Announceme
 
 The goal of the project is to create a web platform where legal entities can publish announcements and individuals can submit proposals in response to those announcements.
 
-
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
@@ -41,16 +40,8 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
 ## License
 
-Nest is [MIT licensed](LICENSE).
+AnnounceMatch is made available under the terms of the Recruitment Project License. The license is provided in the LICENSE.md file in this repository. By using, copying, or distributing this software, you agree to the terms and conditions of this license.
+
+For the full license text, see [LICENSE.md](./LICENSE.md).
