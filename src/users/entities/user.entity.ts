@@ -16,10 +16,10 @@ export class User {
   id: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
-  firstname: string;
+  firstName: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
-  lastname: string;
+  lastName: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
   @Index({ unique: true })

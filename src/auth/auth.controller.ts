@@ -7,17 +7,20 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthUser } from 'src/decorators/auth-user.decorator';
+import { AuthUser } from 'src/decorators/auth-user';
+import Serialize from 'src/decorators/serialize.decorator';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { UserRoles } from 'src/types/enums';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
+import { AuthSuccessDto } from './dto/auth-success.dto';
 import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 @ApiTags('auth')
+@Serialize(AuthSuccessDto)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
