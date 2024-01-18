@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   ForbiddenException,
@@ -25,7 +26,7 @@ import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
 import { AnnouncementStatus, UserRoles } from 'src/types/enums';
 import { User } from 'src/users/entities/user.entity';
-import { ArrayContainedBy, FindManyOptions, In, Like } from 'typeorm';
+import { FindManyOptions, In } from 'typeorm';
 import { AnnouncementsService } from './announcements.service';
 import { AnnouncementDto } from './dto/announcement.dto';
 import { AnnouncementsDto } from './dto/announcements.dto';
@@ -84,51 +85,59 @@ export class AnnouncementsController {
     @Query('category_id') categoryId?: string,
     @Query('search') search?: string,
   ) {
-    const defaultPage = page ? parseInt(page) : 1;
-    const defaultLimit = limit ? parseInt(limit) : 20;
-    const findmanyOptions: FindManyOptions<Announcement> = {
-      where: {
+    try {
+      const defaultPage = page ? parseInt(page) : 1;
+      const defaultLimit = limit ? parseInt(limit) : 20;
+
+      // Start building the query
+      const queryBuilder =
+        this.announcementsService.createQueryBuilder('announcement');
+
+      // Join the users table
+      queryBuilder.innerJoinAndSelect('announcement.createdBy', 'user');
+
+      // Join the categories table
+      queryBuilder.innerJoinAndSelect('announcement.categories', 'category');
+
+      // Filter by status
+      queryBuilder.where('announcement.status = :status', {
         status: AnnouncementStatus.Published,
-      },
-      order: {
-        createdAt: 'DESC',
-      },
-      relations: ['categories', 'createdBy'],
-    };
+      });
 
-    if (search) {
-      findmanyOptions.where = {
-        ...findmanyOptions.where,
-        title: Like(`%${search}%`),
+      // If a categoryId is provided, add a condition for that
+      if (categoryId) {
+        queryBuilder.andWhere('category.id = :categoryId', { categoryId });
+      }
+
+      // If a search term is provided, add a condition for that
+      if (search) {
+        queryBuilder.andWhere('announcement.title LIKE :search', {
+          search: `%${search}%`,
+        });
+      }
+
+      // Add pagination
+      queryBuilder.skip((defaultPage - 1) * defaultLimit);
+      queryBuilder.take(defaultLimit);
+
+      // Get the announcements and the total count
+      const [announcements, totalCount] = await queryBuilder.getManyAndCount();
+
+      return {
+        totalCount,
+        page: defaultPage,
+        limit: defaultLimit,
+        data: announcements,
       };
+    } catch (error) {
+      console.error(error.message);
+      throw new BadRequestException(error.message);
     }
-
-    if (categoryId) {
-      findmanyOptions.where = {
-        ...findmanyOptions.where,
-        categories: ArrayContainedBy([categoryId]),
-      };
-    }
-
-    const totalCount = await this.announcementsService.count(findmanyOptions);
-
-    findmanyOptions.skip = (defaultPage - 1) * defaultLimit;
-    findmanyOptions.take = defaultLimit;
-
-    const announcements =
-      await this.announcementsService.findAll(findmanyOptions);
-
-    return {
-      totalCount,
-      page: defaultPage,
-      limit: defaultLimit,
-      data: announcements,
-    };
   }
 
   @Get('/my')
   @Roles(UserRoles.Publisher)
-  @Serialize(AnnouncementsDto)
+  @Serialize(AnnouncementDto)
   @ApiOperation({
     summary: 'Get publisher announcements',
     description: 'Only publishers can get their own announcements',
@@ -196,7 +205,7 @@ export class AnnouncementsController {
   ) {
     const announcement = await this.announcementsService.findOne({
       where: { id },
-      relations: ['createdBy', 'categories'],
+      relations: ['createdBy', 'categories', 'acceptedProposal'],
     });
     if (announcement.createdBy.id !== authUser.id) {
       throw new ForbiddenException(

@@ -18,7 +18,7 @@ export class Proposal {
   @Column({ type: 'text', nullable: false })
   description: string;
 
-  @Column({ type: 'decimal', precision: 2, scale: 1, nullable: false })
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
   price: number;
 
   @Column({

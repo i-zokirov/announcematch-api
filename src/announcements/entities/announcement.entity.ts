@@ -47,10 +47,10 @@ export class Announcement {
   @Column({ type: 'timestamptz', nullable: true, default: null })
   archivedAt: string | null;
 
+  @JoinTable()
   @ManyToMany(() => Category, (category) => category.announcements, {
     onDelete: 'SET NULL',
   })
-  @JoinTable()
   categories: Category[];
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })

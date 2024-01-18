@@ -14,13 +14,13 @@ export class OneProposalPerAnnouncement implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     const user = request.user;
-    const proposal = request.proposal;
+    const announcement = request.announcement;
 
     if (request.method === 'POST') {
       const proposals = await this.proposalsService.find({
         where: {
           announcement: {
-            id: proposal.announcement.id,
+            id: announcement.id,
           },
           createdBy: {
             id: user.id,

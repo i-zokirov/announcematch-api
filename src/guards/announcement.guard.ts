@@ -24,7 +24,7 @@ export class AnnouncementGuard implements CanActivate {
 
     const announcement = await this.announcementsService.findOne({
       where: { id: announcement_id },
-      relations: ['createdBy'],
+      relations: ['createdBy', 'acceptedProposal'],
     });
 
     if (!announcement) {

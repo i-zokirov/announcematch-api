@@ -27,7 +27,7 @@ import { AnnouncementGuard } from 'src/guards/announcement.guard';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
 import { OneProposalPerAnnouncement } from 'src/guards/oneproposalperannouncement.guard';
-import { ProposalStatus, UserRoles } from 'src/types/enums';
+import { AnnouncementStatus, ProposalStatus, UserRoles } from 'src/types/enums';
 import { User } from 'src/users/entities/user.entity';
 import { CreateProposalDto } from './dto/create-proposal.dto';
 import { PorposalDto } from './dto/proposal.dto';
@@ -70,6 +70,7 @@ export class ProposalsController {
       createdBy: authUser,
       status: ProposalStatus.Pending,
       announcement,
+      price: parseFloat(createProposalDto.price.toString()),
     });
   }
 
@@ -86,7 +87,7 @@ export class ProposalsController {
           id: announcement.id,
         },
       },
-      relations: ['createdBy', 'announcement'],
+      relations: ['createdBy'],
     });
   }
 
@@ -211,7 +212,10 @@ export class ProposalsController {
       );
     }
 
-    if (announcement.acceptedProposal) {
+    if (
+      announcement.acceptedProposal ||
+      announcement.status === AnnouncementStatus.AcceptedProposal
+    ) {
       throw new ForbiddenException(
         `You cannot accept a proposal to an announcement that already has an accepted proposal`,
       );
@@ -231,7 +235,14 @@ export class ProposalsController {
       throw new NotFoundException(`Proposal with id ${id} not found`);
     }
 
+    if (proposal.status === ProposalStatus.Accepted) {
+      throw new ForbiddenException(
+        `You cannot accept a proposal that was already accepted`,
+      );
+    }
+
     announcement.acceptedProposal = proposal;
+    announcement.status = AnnouncementStatus.AcceptedProposal;
     await this.announcementsService.save(announcement);
 
     proposal.status = ProposalStatus.Accepted;
@@ -312,6 +323,12 @@ export class ProposalsController {
     if (authUser.id !== proposal.createdBy.id) {
       throw new ForbiddenException(
         `You cannot withdraw a proposal that you did not create`,
+      );
+    }
+
+    if (proposal.status === ProposalStatus.Withdrawn) {
+      throw new ForbiddenException(
+        `You cannot withdraw a proposal that was already withdrawn`,
       );
     }
 

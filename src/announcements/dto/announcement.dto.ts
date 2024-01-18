@@ -1,5 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { CategoryDto } from 'src/categories/dto/category.dto';
+import { PorposalDto } from 'src/proposals/dto/proposal.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 
 export class AnnouncementDto {
@@ -33,6 +34,10 @@ export class AnnouncementDto {
   @Expose()
   @Type(() => UserDto)
   createdBy: UserDto;
+
+  @Expose()
+  @Type(() => PorposalDto)
+  acceptedProposal: PorposalDto;
 
   @Expose()
   @Type(() => CategoryDto)

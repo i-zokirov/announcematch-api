@@ -52,6 +52,12 @@ export class AuthController {
   @ApiOperation({ summary: 'Signup as contributor' })
   @ApiBody({ type: CreateUserDto })
   async signUpContributor(@Body() createUserDto: CreateUserDto) {
+    const existingUser = await this.usersService.findOne({
+      where: { email: createUserDto.email },
+    });
+    if (existingUser) {
+      throw new BadRequestException('Email already exists');
+    }
     const user = await this.usersService.create({
       ...createUserDto,
       role: UserRoles.Contributor,
@@ -67,6 +73,12 @@ export class AuthController {
   @ApiOperation({ summary: 'Signup as publisher' })
   @ApiBody({ type: CreateUserDto })
   async signupPublisher(@Body() createUserDto: CreateUserDto) {
+    const existingUser = await this.usersService.findOne({
+      where: { email: createUserDto.email },
+    });
+    if (existingUser) {
+      throw new BadRequestException('Email already exists');
+    }
     const user = await this.usersService.create({
       ...createUserDto,
       role: UserRoles.Publisher,

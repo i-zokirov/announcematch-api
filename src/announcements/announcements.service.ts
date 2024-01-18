@@ -49,4 +49,8 @@ export class AnnouncementsService {
   save(announcement: Announcement) {
     return this.repository.save(announcement);
   }
+
+  createQueryBuilder(alias?: string, queryRunnerProvider?: any) {
+    return this.repository.createQueryBuilder(alias, queryRunnerProvider);
+  }
 }

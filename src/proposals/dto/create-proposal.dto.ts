@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDecimal,
-  IsEnum,
-  IsInt,
-  IsNotEmpty,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Announcement } from 'src/announcements/entities/announcement.entity';
 import { ProposalDurationType, ProposalStatus } from 'src/types/enums';
 import { User } from 'src/users/entities/user.entity';
@@ -26,7 +20,7 @@ export class CreateProposalDto {
     required: true,
   })
   @IsNotEmpty()
-  @IsDecimal()
+  @IsNumber()
   price: number;
 
   @ApiProperty({
