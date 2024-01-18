@@ -27,6 +27,7 @@ import { AnnouncementGuard } from 'src/guards/announcement.guard';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
 import { OneProposalPerAnnouncement } from 'src/guards/oneproposalperannouncement.guard';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { AnnouncementStatus, ProposalStatus, UserRoles } from 'src/types/enums';
 import { User } from 'src/users/entities/user.entity';
 import { CreateProposalDto } from './dto/create-proposal.dto';
@@ -51,6 +52,7 @@ export class ProposalsController {
   constructor(
     private readonly proposalsService: ProposalsService,
     private readonly announcementsService: AnnouncementsService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   @Post()
@@ -248,7 +250,13 @@ export class ProposalsController {
     proposal.status = ProposalStatus.Accepted;
     const saved = await this.proposalsService.save(proposal);
 
+    const notification = {
+      message: `Your proposal to the announcement "${announcement.title}" was accepted!`,
+      user: proposal.createdBy,
+    };
+
     // TODO: NOTIFY CONTRIBUTORS THAT THEIR PROPOSAL WAS  ACCEPTED
+    await this.notificationsService.create(notification);
 
     return saved;
   }
@@ -290,6 +298,13 @@ export class ProposalsController {
     proposal.status = ProposalStatus.Rejected;
     const saved = await this.proposalsService.save(proposal);
     // TODO: NOTIFY CONTRIBUTOR THAT THEIR PROPOSAL WAS  REJECTED
+
+    const notification = {
+      message: `Your proposal to the announcement "${announcement.title}" was rejected!`,
+      user: proposal.createdBy,
+    };
+
+    await this.notificationsService.create(notification);
 
     return saved;
   }
