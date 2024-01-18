@@ -29,3 +29,10 @@ export enum ChatStatus {
   Open = 'open',
   Closed = 'closed',
 }
+
+export enum ProposalStatus {
+  Pending = 'pending',
+  Accepted = 'accepted',
+  Rejected = 'rejected',
+  Withdrawn = 'withdrawn',
+}

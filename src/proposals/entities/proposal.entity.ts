@@ -1,5 +1,5 @@
 import { Announcement } from 'src/announcements/entities/announcement.entity';
-import { ProposalDurationType } from 'src/types/enums';
+import { ProposalDurationType, ProposalStatus } from 'src/types/enums';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
@@ -15,11 +15,19 @@ export class Proposal {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false })
+  @Column({ type: 'text', nullable: false })
   description: string;
 
   @Column({ type: 'decimal', precision: 2, scale: 1, nullable: false })
   price: number;
+
+  @Column({
+    type: 'varchar',
+    enum: ProposalStatus,
+    length: 255,
+    nullable: false,
+  })
+  status: ProposalStatus;
 
   @Column({
     type: 'varchar',

@@ -1,4 +1,6 @@
 import { Expose, Type } from 'class-transformer';
+import { AnnouncementDto } from 'src/announcements/dto/announcement.dto';
+import { ProposalStatus } from 'src/types/enums';
 import { UserDto } from 'src/users/dto/user.dto';
 
 export class PorposalDto {
@@ -10,9 +12,12 @@ export class PorposalDto {
 
   @Expose()
   price: number;
+  @Expose()
+  status: ProposalStatus;
 
   @Expose()
   durationType: string;
+
   @Expose()
   duration: number;
 
@@ -21,7 +26,8 @@ export class PorposalDto {
   createdBy: UserDto;
 
   @Expose()
-  announcement: string;
+  @Type(() => AnnouncementDto)
+  announcement: AnnouncementDto;
 
   @Expose()
   createdAt: string;

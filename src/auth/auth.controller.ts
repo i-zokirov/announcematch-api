@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthUser } from 'src/decorators/auth-user';
+import { AuthUser } from 'src/decorators/auth-user.decorator';
 import Serialize from 'src/decorators/serialize.decorator';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { UserRoles } from 'src/types/enums';

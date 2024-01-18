@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthUser } from 'src/decorators/auth-user';
+import { AuthUser } from 'src/decorators/auth-user.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import Serialize from 'src/decorators/serialize.decorator';
 import ValidateRoutParams from 'src/decorators/validate-route-params.decorator';

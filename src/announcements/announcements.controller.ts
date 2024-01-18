@@ -18,7 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CategoriesService } from 'src/categories/categories.service';
-import { AuthUser } from 'src/decorators/auth-user';
+import { AuthUser } from 'src/decorators/auth-user.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import Serialize from 'src/decorators/serialize.decorator';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
