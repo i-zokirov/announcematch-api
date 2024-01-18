@@ -1,26 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
+import { Announcement } from './entities/announcement.entity';
 
 @Injectable()
 export class AnnouncementsService {
+  constructor(
+    @InjectRepository(Announcement)
+    private repository: Repository<Announcement>,
+  ) {}
+
   create(createAnnouncementDto: CreateAnnouncementDto) {
-    return 'This action adds a new announcement';
+    const announcement = this.repository.create({
+      ...createAnnouncementDto,
+      categories: createAnnouncementDto.categories as any,
+    });
+    return this.repository.save(announcement);
   }
 
-  findAll() {
-    return `This action returns all announcements`;
+  findAll(options?: FindManyOptions<Announcement>) {
+    return this.repository.find(options);
+  }
+  count(options?: FindManyOptions<Announcement>) {
+    return this.repository.count(options);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} announcement`;
+  findOne(options?: FindOneOptions<Announcement>) {
+    return this.repository.findOne(options);
   }
 
-  update(id: number, updateAnnouncementDto: UpdateAnnouncementDto) {
-    return `This action updates a #${id} announcement`;
+  async update(id: string, updateAnnouncementDto: UpdateAnnouncementDto) {
+    const announcement = await this.repository.findOne({ where: { id } });
+    if (!announcement)
+      throw new NotFoundException(`Announcement with id ${id} not found`);
+    Object.assign(announcement, updateAnnouncementDto);
+    return this.repository.save(announcement);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} announcement`;
+  async remove(id: string) {
+    const announcement = await this.repository.findOne({ where: { id } });
+    if (!announcement)
+      throw new NotFoundException(`Announcement with id ${id} not found`);
+    return this.repository.remove(announcement);
+  }
+
+  save(announcement: Announcement) {
+    return this.repository.save(announcement);
   }
 }

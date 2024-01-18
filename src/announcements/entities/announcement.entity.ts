@@ -23,10 +23,10 @@ export class Announcement {
   @Column({ type: 'varchar', length: 255, nullable: false })
   title: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: false })
+  @Column({ type: 'text', nullable: false })
   description: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true, default: null })
+  @Column({ type: 'text', nullable: true, default: null })
   image: string | null;
 
   @Column({
