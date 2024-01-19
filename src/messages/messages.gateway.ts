@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UseInterceptors } from '@nestjs/common';
 import {
   MessageBody,
   SubscribeMessage,
@@ -10,6 +10,7 @@ import { WsCurrentChat } from 'src/decorators/ws-current-chat.decorator';
 import { WsChatAuthorizationGuard } from 'src/guards/chat-authorization.guard';
 import { WsAuthenticationGuard } from 'src/guards/ws-authentication.guard';
 import { WsAuthorizationGuard } from 'src/guards/ws-authorization.guard';
+import { WsLoggingInterceptor } from 'src/interceptors/ws-logger.interceptor';
 import { User } from 'src/users/entities/user.entity';
 import { FindManyOptions } from 'typeorm';
 import { CreateMessageDto } from './dto/create-message.dto';
@@ -23,6 +24,7 @@ import { MessagesService } from './messages.service';
   WsAuthorizationGuard,
   WsChatAuthorizationGuard,
 )
+@UseInterceptors(WsLoggingInterceptor)
 export class MessagesGateway {
   constructor(private readonly messagesService: MessagesService) {}
 

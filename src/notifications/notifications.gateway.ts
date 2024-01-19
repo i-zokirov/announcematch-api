@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UseInterceptors } from '@nestjs/common';
 import {
   MessageBody,
   SubscribeMessage,
@@ -6,12 +6,14 @@ import {
 } from '@nestjs/websockets';
 import { WsAuthUser } from 'src/decorators/ws-auth-user.decorator';
 import { WsAuthenticationGuard } from 'src/guards/ws-authentication.guard';
+import { WsLoggingInterceptor } from 'src/interceptors/ws-logger.interceptor';
 import { User } from 'src/users/entities/user.entity';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { NotificationsService } from './notifications.service';
 
 @WebSocketGateway()
 @UseGuards(WsAuthenticationGuard)
+@UseInterceptors(WsLoggingInterceptor)
 export class NotificationsGateway {
   constructor(private readonly notificationsService: NotificationsService) {}
 

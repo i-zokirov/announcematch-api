@@ -9,12 +9,13 @@ import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ChatsModule } from './chats/chats.module';
 import { TypeOrmConfigService } from './config/typeorm.config';
+import { ConnectionsModule } from './connections/connections.module';
 import { MessagesModule } from './messages/messages.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ProposalsModule } from './proposals/proposals.module';
-import { UsersModule } from './users/users.module';
-import { ConnectionsModule } from './connections/connections.module';
 import { SocketsStateModule } from './sockets-state/sockets-state.module';
+import { UsersModule } from './users/users.module';
+import { WinstonLoggerModule } from './winston-logger/winston-logger.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { SocketsStateModule } from './sockets-state/sockets-state.module';
     ChatsModule,
     ConnectionsModule,
     SocketsStateModule,
+    WinstonLoggerModule,
   ],
   controllers: [AppController],
   providers: [

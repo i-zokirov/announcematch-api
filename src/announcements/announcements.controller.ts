@@ -9,6 +9,7 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -24,6 +25,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import Serialize from 'src/decorators/serialize.decorator';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
+import { HttpLoggingInterceptor } from 'src/interceptors/http-logging.interceptor';
 import { AnnouncementStatus, UserRoles } from 'src/types/enums';
 import { User } from 'src/users/entities/user.entity';
 import { FindManyOptions, In } from 'typeorm';
@@ -36,6 +38,7 @@ import { Announcement } from './entities/announcement.entity';
 
 @Controller('announcements')
 @UseGuards(AuthenticationGuard, AuthorizationGuard)
+@UseInterceptors(HttpLoggingInterceptor)
 @ApiTags('announcements')
 @ApiBearerAuth('jwt')
 export class AnnouncementsController {

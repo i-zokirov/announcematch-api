@@ -1,13 +1,16 @@
+import { UseInterceptors } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { ChatsService } from 'src/chats/chats.service';
+import { WsLoggingInterceptor } from 'src/interceptors/ws-logger.interceptor';
 import { SocketsStateService } from 'src/sockets-state/sockets-state.service';
 import { Socket } from 'src/types/socket';
 import { UsersService } from 'src/users/users.service';
 import { ConnectionsService } from './connections.service';
 
 @WebSocketGateway({ cors: true })
+@UseInterceptors(WsLoggingInterceptor)
 export class ConnectionsGateway {
   constructor(
     private readonly connectionsService: ConnectionsService,

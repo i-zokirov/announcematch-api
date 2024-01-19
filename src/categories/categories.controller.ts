@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -14,6 +15,7 @@ import Serialize from 'src/decorators/serialize.decorator';
 import ValidateRoutParams from 'src/decorators/validate-route-params.decorator';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
+import { HttpLoggingInterceptor } from 'src/interceptors/http-logging.interceptor';
 import { UserRoles } from 'src/types/enums';
 import { CategoriesService } from './categories.service';
 import { CategoryDto } from './dto/category.dto';
@@ -24,6 +26,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 @ValidateRoutParams()
 @UseGuards(AuthenticationGuard, AuthorizationGuard)
 @Serialize(CategoryDto)
+@UseInterceptors(HttpLoggingInterceptor)
 @ApiTags('categories')
 @ApiBearerAuth('jwt')
 export class CategoriesController {
