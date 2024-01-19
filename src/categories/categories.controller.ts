@@ -15,6 +15,7 @@ import Serialize from 'src/decorators/serialize.decorator';
 import ValidateRoutParams from 'src/decorators/validate-route-params.decorator';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
+import { CustomCacheManagerInterceptor } from 'src/interceptors/cache-manager.interceptor';
 import { HttpLoggingInterceptor } from 'src/interceptors/http-logging.interceptor';
 import { UserRoles } from 'src/types/enums';
 import { CategoriesService } from './categories.service';
@@ -26,7 +27,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 @ValidateRoutParams()
 @UseGuards(AuthenticationGuard, AuthorizationGuard)
 @Serialize(CategoryDto)
-@UseInterceptors(HttpLoggingInterceptor)
+@UseInterceptors(HttpLoggingInterceptor, CustomCacheManagerInterceptor)
 @ApiTags('categories')
 @ApiBearerAuth('jwt')
 export class CategoriesController {

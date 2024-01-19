@@ -28,6 +28,7 @@ import { AnnouncementGuard } from 'src/guards/announcement.guard';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
 import { OneProposalPerAnnouncement } from 'src/guards/oneproposalperannouncement.guard';
+import { CustomCacheManagerInterceptor } from 'src/interceptors/cache-manager.interceptor';
 import { HttpLoggingInterceptor } from 'src/interceptors/http-logging.interceptor';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { AnnouncementStatus, ProposalStatus, UserRoles } from 'src/types/enums';
@@ -47,7 +48,7 @@ import { ProposalsService } from './proposals.service';
 )
 @ValidateRoutParams()
 @Serialize(PorposalDto)
-@UseInterceptors(HttpLoggingInterceptor)
+@UseInterceptors(HttpLoggingInterceptor, CustomCacheManagerInterceptor)
 @ApiTags('proposals')
 @ApiBearerAuth('jwt')
 @ApiParam({ name: 'announcement_id', type: String, required: true })

@@ -1,3 +1,4 @@
+import { CacheModule } from '@nestjs/cache-manager';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
@@ -25,6 +26,11 @@ import { WinstonLoggerModule } from './winston-logger/winston-logger.module';
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      // 1 minute in milliseconds
+      ttl: 60 * 1000,
     }),
     UsersModule,
     AuthModule,
