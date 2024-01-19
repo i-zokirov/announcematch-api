@@ -25,10 +25,15 @@ export class NotificationsService {
     return this.repository.findOne(options);
   }
 
-  async update(updateNotificationDto: UpdateNotificationDto) {
-    const { id, user, ...rest } = updateNotificationDto;
+  async update(user_id: string, updateNotificationDto: UpdateNotificationDto) {
+    const { id, ...rest } = updateNotificationDto;
     const notification = await this.repository.findOne({
-      where: { id },
+      where: {
+        id,
+        user: {
+          id: user_id,
+        },
+      },
     });
 
     if (!notification) {

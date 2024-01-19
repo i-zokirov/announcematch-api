@@ -1,7 +1,14 @@
 import { Chat } from 'src/chats/entities/chat.entity';
 import { MessageTypes } from 'src/types/enums';
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('messages')
 export class Message {
@@ -39,4 +46,10 @@ export class Message {
 
   @ManyToOne(() => Chat, { onDelete: 'SET NULL' })
   chat: Chat;
+
+  @UpdateDateColumn()
+  updatedAt: string;
+
+  @CreateDateColumn()
+  createdAt: string;
 }

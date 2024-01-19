@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Chat } from 'src/chats/entities/chat.entity';
+import { User } from 'src/users/entities/user.entity';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { CreateMessageDto } from './dto/create-message.dto';
-import { UpdateMessageDto } from './dto/update-message.dto';
+import { Message } from './entities/message.entity';
+
+interface CreateMessageDtoWithUser extends Omit<CreateMessageDto, 'chat_id'> {
+  user: User;
+  chat: Chat;
+}
 
 @Injectable()
 export class MessagesService {
-  create(createMessageDto: CreateMessageDto) {
-    return 'This action adds a new message';
+  constructor(
+    @InjectRepository(Message)
+    private repository: Repository<Message>,
+  ) {}
+
+  create(createMessageDto: CreateMessageDtoWithUser) {
+    const message = this.repository.create(createMessageDto);
+    return this.repository.save(message);
   }
 
-  findAll() {
-    return `This action returns all messages`;
+  findAll(options?: FindManyOptions<Message>) {
+    return this.repository.find(options);
+  }
+  count(options?: FindManyOptions<Message>) {
+    return this.repository.count(options);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} message`;
-  }
-
-  update(id: number, updateMessageDto: UpdateMessageDto) {
-    return `This action updates a #${id} message`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} message`;
+  findOne(options?: FindOneOptions<Message>) {
+    return this.repository.findOne(options);
   }
 }

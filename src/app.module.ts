@@ -7,12 +7,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ChatsModule } from './chats/chats.module';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { MessagesModule } from './messages/messages.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ProposalsModule } from './proposals/proposals.module';
 import { UsersModule } from './users/users.module';
-import { ChatsModule } from './chats/chats.module';
+import { ConnectionsModule } from './connections/connections.module';
+import { SocketsStateModule } from './sockets-state/sockets-state.module';
 
 @Module({
   imports: [
@@ -31,6 +33,8 @@ import { ChatsModule } from './chats/chats.module';
     MessagesModule,
     CategoriesModule,
     ChatsModule,
+    ConnectionsModule,
+    SocketsStateModule,
   ],
   controllers: [AppController],
   providers: [

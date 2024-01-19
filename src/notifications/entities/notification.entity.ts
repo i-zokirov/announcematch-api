@@ -1,5 +1,12 @@
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('notifications')
 export class Notification {
@@ -14,4 +21,10 @@ export class Notification {
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
+
+  @UpdateDateColumn()
+  updatedAt: string;
+
+  @CreateDateColumn()
+  createdAt: string;
 }

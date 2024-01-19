@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcryptjs';
+import { Chat } from 'src/chats/entities/chat.entity';
 import { UserRoles } from 'src/types/enums';
 import {
   BeforeInsert,
@@ -6,6 +7,7 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -48,6 +50,11 @@ export class User {
 
   @CreateDateColumn()
   createdAt: string;
+
+  @ManyToMany(() => Chat, (chat) => chat.participants, {
+    onDelete: 'SET NULL',
+  })
+  chats: Chat[];
 
   @BeforeInsert()
   emailToLowerCase() {

@@ -45,7 +45,11 @@ export class UsersController {
   ) {
     const defaultPage = page ? parseInt(page) : 1;
     const defaultLimit = limit ? parseInt(limit) : 100;
-    const options: FindManyOptions<User> = {};
+    const options: FindManyOptions<User> = {
+      order: {
+        createdAt: 'DESC',
+      },
+    };
     if (search) {
       const searchQuery = `%${search}%`;
       options.where = [

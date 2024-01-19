@@ -1,26 +1,54 @@
 import { Injectable } from '@nestjs/common';
-import { CreateChatDto } from './dto/create-chat.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Announcement } from 'src/announcements/entities/announcement.entity';
+import { ChatStatus } from 'src/types/enums';
+import { User } from 'src/users/entities/user.entity';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { UpdateChatDto } from './dto/update-chat.dto';
+import { Chat } from './entities/chat.entity';
+
+interface CreateChatDtoWithParticipants {
+  participants: User[];
+  createdBy: User;
+  announcement: Announcement;
+  title: string;
+}
 
 @Injectable()
 export class ChatsService {
-  create(createChatDto: CreateChatDto) {
-    return 'This action adds a new chat';
+  constructor(
+    @InjectRepository(Chat)
+    private repository: Repository<Chat>,
+  ) {}
+
+  create(createChatDto: CreateChatDtoWithParticipants) {
+    const chat = this.repository.create(createChatDto);
+    return this.repository.save(chat);
   }
 
-  findAll() {
-    return `This action returns all chats`;
+  findAll(options?: FindManyOptions<Chat>) {
+    return this.repository.find(options);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} chat`;
+  findOne(options?: FindOneOptions<Chat>) {
+    return this.repository.findOne(options);
   }
 
-  update(id: number, updateChatDto: UpdateChatDto) {
-    return `This action updates a #${id} chat`;
+  findOpenChatsWhereUserIsParticipant(user_id: string) {
+    return this.repository
+      .createQueryBuilder('chat')
+      .leftJoinAndSelect('chat.participants', 'participants')
+      .where('participants.id = :user_id', { user_id })
+      .andWhere('chat.status = :status', { status: ChatStatus.Open })
+      .getMany();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} chat`;
+  async update(id: string, user_id: string, updateChatDto: UpdateChatDto) {
+    const chat = await this.repository.findOne({
+      where: { id, createdBy: { id: user_id } },
+    });
+    if (!chat) return null;
+    Object.assign(chat, updateChatDto);
+    return this.repository.save(chat);
   }
 }
