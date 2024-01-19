@@ -35,7 +35,7 @@ import { WinstonLoggerModule } from './winston-logger/winston-logger.module';
     ThrottlerModule.forRoot([
       {
         ttl: 60 * 1000,
-        limit: 100,
+        limit: 2000,
       },
     ]),
     UsersModule,

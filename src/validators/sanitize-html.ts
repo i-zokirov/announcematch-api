@@ -3,7 +3,7 @@ import {
   ValidationOptions,
   registerDecorator,
 } from 'class-validator';
-import * as sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from 'sanitize-html';
 
 export function SanitizeHTML(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
