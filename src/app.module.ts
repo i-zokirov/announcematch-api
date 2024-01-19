@@ -1,7 +1,8 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_PIPE } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { AppController } from './app.controller';
@@ -29,9 +30,14 @@ import { WinstonLoggerModule } from './winston-logger/winston-logger.module';
     }),
     CacheModule.register({
       isGlobal: true,
-      // 1 minute in milliseconds
       ttl: 60 * 1000,
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60 * 1000,
+        limit: 100,
+      },
+    ]),
     UsersModule,
     AuthModule,
     AnnouncementsModule,
@@ -51,6 +57,10 @@ import { WinstonLoggerModule } from './winston-logger/winston-logger.module';
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({ whitelist: true }),
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

@@ -1,12 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsDecimal,
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsDecimal, IsEnum, IsInt, IsOptional } from 'class-validator';
 import { ProposalDurationType } from 'src/types/enums';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class UpdateProposalDto {
   @ApiPropertyOptional({
@@ -15,7 +10,7 @@ export class UpdateProposalDto {
     required: true,
   })
   @IsOptional()
-  @IsString()
+  @SanitizeHTML()
   description: string;
 
   @ApiPropertyOptional({

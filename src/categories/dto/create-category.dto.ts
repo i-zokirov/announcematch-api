@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Length } from 'class-validator';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class CreateCategoryDto {
   @ApiProperty({
@@ -10,5 +11,6 @@ export class CreateCategoryDto {
   @IsNotEmpty()
   @IsString()
   @Length(3, 255)
+  @SanitizeHTML()
   name: string;
 }

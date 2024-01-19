@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -9,6 +10,7 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsString()
+  @SanitizeHTML()
   firstName: string;
 
   @ApiProperty({
@@ -17,7 +19,7 @@ export class CreateUserDto {
     required: true,
   })
   @IsNotEmpty()
-  @IsString()
+  @SanitizeHTML()
   lastName: string;
 
   @ApiProperty({
@@ -26,7 +28,6 @@ export class CreateUserDto {
     required: true,
   })
   @IsNotEmpty()
-  @IsString()
   @IsEmail()
   email: string;
 

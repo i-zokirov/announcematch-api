@@ -7,6 +7,7 @@ import {
   IsUUID,
 } from 'class-validator';
 import { ChatStatus } from 'src/types/enums';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class UpdateChatDto {
   @ApiProperty({
@@ -38,5 +39,6 @@ export class UpdateChatDto {
   })
   @IsOptional()
   @IsString()
+  @SanitizeHTML()
   title: string;
 }

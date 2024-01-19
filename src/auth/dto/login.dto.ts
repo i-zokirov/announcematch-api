@@ -8,7 +8,6 @@ export class LoginDto {
     required: true,
   })
   @IsNotEmpty()
-  @IsString()
   @IsEmail()
   email: string;
 

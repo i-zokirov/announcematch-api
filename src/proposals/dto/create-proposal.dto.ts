@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsNumber } from 'class-validator';
 import { Announcement } from 'src/announcements/entities/announcement.entity';
 import { ProposalDurationType, ProposalStatus } from 'src/types/enums';
 import { User } from 'src/users/entities/user.entity';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class CreateProposalDto {
   @ApiProperty({
@@ -11,7 +12,7 @@ export class CreateProposalDto {
     required: true,
   })
   @IsNotEmpty()
-  @IsString()
+  @SanitizeHTML()
   description: string;
 
   @ApiProperty({

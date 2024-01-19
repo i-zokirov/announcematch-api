@@ -1,5 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString, Length } from 'class-validator';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class UpdateCategoryDto {
   @ApiPropertyOptional({
@@ -10,5 +11,6 @@ export class UpdateCategoryDto {
   @IsOptional()
   @IsString()
   @Length(3, 255)
+  @SanitizeHTML()
   name: string;
 }

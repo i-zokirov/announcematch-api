@@ -7,6 +7,7 @@ import {
   IsUrl,
 } from 'class-validator';
 import { AnnouncementStatus } from 'src/types/enums';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class UpdateAnnouncementDto {
   @ApiPropertyOptional({
@@ -16,6 +17,7 @@ export class UpdateAnnouncementDto {
   })
   @IsOptional()
   @IsString()
+  @SanitizeHTML()
   title: string;
 
   @ApiPropertyOptional({
@@ -25,6 +27,7 @@ export class UpdateAnnouncementDto {
   })
   @IsOptional()
   @IsString()
+  @SanitizeHTML()
   description: string;
 
   @ApiPropertyOptional({
@@ -43,7 +46,6 @@ export class UpdateAnnouncementDto {
     required: false,
   })
   @IsOptional()
-  @IsString()
   @IsEnum(AnnouncementStatus)
   status: AnnouncementStatus;
 

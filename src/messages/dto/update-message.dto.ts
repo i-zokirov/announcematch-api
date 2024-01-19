@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsUUID } from 'class-validator';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class UpdateMessageDto {
   @ApiProperty({
@@ -17,7 +18,7 @@ export class UpdateMessageDto {
     required: false,
   })
   @IsNotEmpty()
-  @IsString()
+  @SanitizeHTML()
   text: string;
 
   @ApiProperty({

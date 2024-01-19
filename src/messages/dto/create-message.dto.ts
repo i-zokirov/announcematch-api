@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { MessageTypes } from 'src/types/enums';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class CreateMessageDto {
   @ApiProperty({
@@ -10,6 +11,7 @@ export class CreateMessageDto {
   })
   @IsNotEmpty()
   @IsString()
+  @SanitizeHTML()
   text: string;
 
   @ApiProperty({
@@ -19,7 +21,7 @@ export class CreateMessageDto {
     required: true,
   })
   @IsNotEmpty()
-  @IsString()
+  @IsEnum(MessageTypes)
   type: MessageTypes;
 
   @ApiProperty({

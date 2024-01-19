@@ -9,6 +9,7 @@ import {
 } from 'class-validator';
 import { AnnouncementStatus } from 'src/types/enums';
 import { User } from 'src/users/entities/user.entity';
+import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class CreateAnnouncementDto {
   @ApiProperty({
@@ -16,8 +17,9 @@ export class CreateAnnouncementDto {
     description: 'Title of the announcement',
     required: true,
   })
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
+  @SanitizeHTML()
   title: string;
 
   @ApiProperty({
@@ -27,6 +29,7 @@ export class CreateAnnouncementDto {
   })
   @IsNotEmpty()
   @IsString()
+  @SanitizeHTML()
   description: string;
 
   @ApiPropertyOptional({
@@ -45,7 +48,6 @@ export class CreateAnnouncementDto {
     required: false,
   })
   @IsOptional()
-  @IsString()
   @IsEnum(AnnouncementStatus)
   status: AnnouncementStatus;
 
