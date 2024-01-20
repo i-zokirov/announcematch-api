@@ -4,13 +4,16 @@ import {
   Controller,
   ForbiddenException,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
   Query,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -20,6 +23,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CategoriesService } from 'src/categories/categories.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { AuthUser } from 'src/decorators/auth-user.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import Serialize from 'src/decorators/serialize.decorator';
@@ -45,6 +49,7 @@ export class AnnouncementsController {
   constructor(
     private readonly announcementsService: AnnouncementsService,
     private readonly categoriesService: CategoriesService,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   @Post()
@@ -210,6 +215,11 @@ export class AnnouncementsController {
       where: { id },
       relations: ['createdBy', 'categories', 'acceptedProposal'],
     });
+
+    if (!announcement) {
+      throw new NotFoundException('Announcement not found');
+    }
+
     if (announcement.createdBy.id !== authUser.id) {
       throw new ForbiddenException(
         'You are not the owner of this announcement',
@@ -228,6 +238,44 @@ export class AnnouncementsController {
     }
 
     Object.assign(announcement, rest);
+
+    return this.announcementsService.save(announcement);
+  }
+
+  @Patch(':announcement_id/media')
+  @Roles(UserRoles.Publisher)
+  @Serialize(AnnouncementDto)
+  @UseInterceptors(FileInterceptor('announcement-media'))
+  @ApiOperation({
+    summary: 'Upload an announcement media',
+    description: 'Only publishers can upload an announcement media',
+  })
+  async uploadMedia(
+    @UploadedFile() file: Express.Multer.File,
+    @AuthUser() authUser: User,
+    @Param('announcement_id') id: string,
+  ) {
+    const announcement = await this.announcementsService.findOne({
+      where: { id },
+      relations: ['createdBy', 'categories', 'acceptedProposal'],
+    });
+
+    if (!announcement) {
+      throw new NotFoundException('Announcement not found');
+    }
+
+    if (announcement.createdBy.id !== authUser.id) {
+      throw new ForbiddenException(
+        'You are not the owner of this announcement',
+      );
+    }
+
+    const result = await this.cloudinaryService.uploadImageFile(file, 'offers');
+
+    Object.assign(announcement, {
+      image: result.secure_url,
+      imageAssetId: result.asset_id,
+    });
 
     return this.announcementsService.save(announcement);
   }

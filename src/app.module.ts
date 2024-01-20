@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CategoriesModule } from './categories/categories.module';
 import { ChatsModule } from './chats/chats.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { ConnectionsModule } from './connections/connections.module';
 import { MessagesModule } from './messages/messages.module';
@@ -23,7 +24,7 @@ import { WinstonLoggerModule } from './winston-logger/winston-logger.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env`,
+      envFilePath: `dev.env`,
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
@@ -49,6 +50,7 @@ import { WinstonLoggerModule } from './winston-logger/winston-logger.module';
     ConnectionsModule,
     SocketsStateModule,
     WinstonLoggerModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [

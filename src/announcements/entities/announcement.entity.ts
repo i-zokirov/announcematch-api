@@ -29,6 +29,9 @@ export class Announcement {
   @Column({ type: 'text', nullable: true, default: null })
   image: string | null;
 
+  @Column({ type: 'text', nullable: true, default: null })
+  imageAssetId: string | null;
+
   @Column({
     type: 'varchar',
     length: 255,
