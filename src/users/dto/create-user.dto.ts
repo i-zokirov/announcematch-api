@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 import { SanitizeHTML } from 'src/validators/sanitize-html';
 
 export class CreateUserDto {
@@ -38,5 +38,6 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsString()
+  @Length(8, 20)
   password: string;
 }

@@ -38,6 +38,8 @@ export class ChatsService {
     return this.repository
       .createQueryBuilder('chat')
       .leftJoinAndSelect('chat.participants', 'participants')
+      .leftJoinAndSelect('chat.createdBy', 'createdBy')
+      .leftJoinAndSelect('chat.announcement', 'announcement')
       .where('participants.id = :user_id', { user_id })
       .andWhere('chat.status = :status', { status: ChatStatus.Open })
       .getMany();

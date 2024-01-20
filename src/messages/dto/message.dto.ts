@@ -1,7 +1,8 @@
 import { Expose, Type } from 'class-transformer';
+import { ChatDto } from 'src/chats/dto/chat.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 
-export class Message {
+export class MessageDto {
   @Expose()
   id: string;
 
@@ -31,6 +32,7 @@ export class Message {
   user: UserDto;
 
   @Expose()
+  @Type(() => ChatDto)
   chat: string;
 
   @Expose()

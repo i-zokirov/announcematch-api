@@ -4,6 +4,26 @@ Terms of Reference (ToR) for the Project "Platform for Publication of Announceme
 
 The goal of the project is to create a web platform where legal entities can publish announcements and individuals can submit proposals in response to those announcements.
 
+Logging and Monitoring: Integrated a logging with Winston
+
+Security Enhancements: Implemented Helmet for setting various HTTP headers to secure the app.
+
+Basic Rate limiting implemented to prevent abuse of the API.
+
+Used TypeORM for database interactions.
+
+Integrated JWT Authentication and role-based access control (RBAC) for fine-grained Authorization on both HTTP and the Websocket APIs
+
+API Documentation with Swagger
+
+Implemented global error handling mechanisms .
+
+Used class-validator and class-transformer for DTO validation and transformation.
+
+Used sanitize-html to clean and sanitize the string inputs.
+
+Implemented basic in memory caching strategy to reduce load on the database and improve response times.
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.

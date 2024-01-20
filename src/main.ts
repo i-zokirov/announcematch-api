@@ -2,8 +2,8 @@ import cluster from 'cluster';
 import os from 'os';
 import bootstrap from './bootstrap';
 
-const numCPUs = os.cpus().length ?? 1;
-console.log(numCPUs);
+const numCPUs = process.env.NODE_ENV === 'production' ? os.cpus().length : 1;
+
 if (cluster.isPrimary) {
   console.info(`Primary ${process.pid} is running`);
 
