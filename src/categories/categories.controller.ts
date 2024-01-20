@@ -24,10 +24,10 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
-@ValidateRoutParams()
 @UseGuards(AuthenticationGuard, AuthorizationGuard)
 @Serialize(CategoryDto)
 @UseInterceptors(HttpLoggingInterceptor, CustomCacheManagerInterceptor)
+@ValidateRoutParams()
 @ApiTags('categories')
 @ApiBearerAuth('jwt')
 export class CategoriesController {

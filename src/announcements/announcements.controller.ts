@@ -27,6 +27,7 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { AuthUser } from 'src/decorators/auth-user.decorator';
 import { Roles } from 'src/decorators/roles.decorator';
 import Serialize from 'src/decorators/serialize.decorator';
+import ValidateRoutParams from 'src/decorators/validate-route-params.decorator';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
 import { HttpLoggingInterceptor } from 'src/interceptors/http-logging.interceptor';
@@ -43,6 +44,7 @@ import { Announcement } from './entities/announcement.entity';
 @Controller('announcements')
 @UseGuards(AuthenticationGuard, AuthorizationGuard)
 @UseInterceptors(HttpLoggingInterceptor)
+@ValidateRoutParams()
 @ApiTags('announcements')
 @ApiBearerAuth('jwt')
 export class AnnouncementsController {

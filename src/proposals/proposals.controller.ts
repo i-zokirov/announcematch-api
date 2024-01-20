@@ -46,8 +46,8 @@ import { ProposalsService } from './proposals.service';
   AnnouncementGuard,
   OneProposalPerAnnouncement,
 )
-@ValidateRoutParams()
 @Serialize(PorposalDto)
+@ValidateRoutParams()
 @UseInterceptors(HttpLoggingInterceptor, CustomCacheManagerInterceptor)
 @ApiTags('proposals')
 @ApiBearerAuth('jwt')
