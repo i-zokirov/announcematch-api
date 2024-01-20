@@ -7,7 +7,7 @@ export const helperConfigOptions: HelmetOptions = {
     directives: {
       defaultSrc: ["'self'"], // Limits where resources can be loaded from; here, only from the same origin
       styleSrc: ["'self'", 'https://fonts.googleapis.com'], // Defines valid sources for stylesheets
-      imgSrc: ["'self'", 'data:', 'https://cdn.example.com'], // Defines valid sources for images
+      imgSrc: ["'self'", 'data:', 'https://res.cloudinary.com/'], // Defines valid sources for images
       objectSrc: ["'none'"], // Defines valid sources for plugins, like <object>, <embed>, or <applet>
       upgradeInsecureRequests: [], // Upgrades insecure requests to HTTPS
     },

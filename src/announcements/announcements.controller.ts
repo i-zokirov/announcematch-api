@@ -274,6 +274,10 @@ export class AnnouncementsController {
 
     const result = await this.cloudinaryService.uploadImageFile(file, 'offers');
 
+    if (announcement.imageAssetId) {
+      await this.cloudinaryService.deleteAssetById(announcement.imageAssetId);
+    }
+
     Object.assign(announcement, {
       image: result.secure_url,
       imageAssetId: result.asset_id,

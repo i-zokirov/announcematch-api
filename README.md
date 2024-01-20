@@ -4,6 +4,10 @@ Terms of Reference (ToR) for the Project "Platform for Publication of Announceme
 
 The goal of the project is to create a web platform where legal entities can publish announcements and individuals can submit proposals in response to those announcements.
 
+### Whats done
+
+All listed business requirements have been accomplished
+
 Logging and Monitoring: Integrated a logging with Winston
 
 Security Enhancements: Implemented Helmet for setting various HTTP headers to secure the app.
@@ -24,9 +28,7 @@ Used sanitize-html to clean and sanitize the string inputs.
 
 Implemented basic in memory caching strategy to reduce load on the database and improve response times.
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Basic clustering with native node.js cluster module.
 
 ## Installation
 
