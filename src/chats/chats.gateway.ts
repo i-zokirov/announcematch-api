@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UseInterceptors } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -12,6 +12,7 @@ import Serialize from 'src/decorators/serialize.decorator';
 import { WsAuthUser } from 'src/decorators/ws-auth-user.decorator';
 import { WsAuthenticationGuard } from 'src/guards/ws-authentication.guard';
 import { WsAuthorizationGuard } from 'src/guards/ws-authorization.guard';
+import { WsLoggingInterceptor } from 'src/interceptors/ws-logger.interceptor';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { UserRoles } from 'src/types/enums';
 import { Socket } from 'src/types/socket';
@@ -24,6 +25,7 @@ import { UpdateChatDto } from './dto/update-chat.dto';
 @WebSocketGateway()
 @UseGuards(WsAuthenticationGuard, WsAuthorizationGuard)
 @Serialize(ChatDto)
+@UseInterceptors(WsLoggingInterceptor)
 export class ChatsGateway {
   constructor(
     private readonly chatsService: ChatsService,
